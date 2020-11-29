@@ -3,16 +3,17 @@ A music app for kids, built with Java on Android Studios. "Ola Ola" is a filler 
 
 ## Tasks
 - [x] Proposed GUI on XD
+- [x] Store/Retrieve data from Firebase Realtime Database
 - [ ] App Login 
 - [ ] Scrub songs 
 - [ ] Replay music
 - [ ] Shuffle music 
 - [ ] Swipe to change songs 
-- [ ] Store music on cloud e.g. Firebase 
 - [ ] Search music 
 
 ## Proposed GUI on XD 
 View the mockup here https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a4180cda-b004/
 
 ## Attribution
-Monster Vectors from https://www.freepik.com/vectors/character 
+Monster Vectors - https://www.freepik.com/vectors/character 
+GeeksforGeeks - https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/
