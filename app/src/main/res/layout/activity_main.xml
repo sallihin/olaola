@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainbg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+    android:background="#FDEFF1"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:width="300sp"
+        android:backgroundTint="#E52657"
+        android:fontFamily="@font/cabin_bold"
+        android:onClick="goToLoginPage"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="0"
+        android:stateListAnimator="@null"
+        android:text="Log In"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:typeface="normal"
+        app:cornerRadius="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appLogo" />
+
+    <Button
+        android:id="@+id/sign_up_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="300sp"
+        android:backgroundTint="#FDEFF1"
+        android:fontFamily="@font/cabin_bold"
+        android:onClick="goToSignUpPage"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="0"
+        android:stateListAnimator="@null"
+        android:text="Sign Up"
+        android:textAllCaps="false"
+        android:textColor="#E52657"
+        android:textSize="20sp"
+        android:typeface="normal"
+        app:cornerRadius="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button"
+        app:strokeColor="#E52657"
+        app:strokeWidth="2sp" />
+
+    <ImageView
+        android:id="@+id/mainMonster"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/home_monster" />
+
+    <ImageView
+        android:id="@+id/appLogo"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:maxWidth="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainMonster"
+        app:srcCompat="@drawable/app_logo" />
+
+    <TextView
+        android:id="@+id/privacy_policy_textbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:onClick="goToPrivacy"
+        android:text="Privacy Policy. Developed by Putra Nursallihin."
+        android:textColor="#80E52657"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/cabin_bold"
+        android:text=" Forgot Password"
+        android:textColor="#192553"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

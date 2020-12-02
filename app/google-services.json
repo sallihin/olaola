@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "549905796146",
+    "firebase_url": "https://music-app-bf8f9.firebaseio.com",
+    "project_id": "music-app-bf8f9",
+    "storage_bucket": "music-app-bf8f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549905796146:android:a065ece6a23eaba1eec02b",
+        "android_client_info": {
+          "package_name": "sg.edu.tp.putra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549905796146-08t2gkd8323jts68busaus2jl1d0pjt0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.edu.tp.putra",
+            "certificate_hash": "2400e1c40dd4769d44f8937e306decfb9ad3cad9"
+          }
+        },
+        {
+          "client_id": "549905796146-icjbtfm89526s4sfseo7eor3p9uq33a9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz1rOgOCoIisevyRFwNzRnvxTp7G3azAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549905796146-icjbtfm89526s4sfseo7eor3p9uq33a9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

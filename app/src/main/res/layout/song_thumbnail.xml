@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/songs"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:paddingHorizontal="30dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/coverArtPlaceholder"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:elevation="5dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="15dp"
+        app:layout_constraintLeft_toLeftOf="@+id/songs"
+        app:layout_constraintRight_toRightOf="@+id/songs"
+        app:layout_constraintTop_toTopOf="@+id/songs">
+
+        <ImageButton
+            android:id="@+id/song_coverArt"
+            android:layout_width="178dp"
+            android:layout_height="179dp"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="Album Cover"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/song_title"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cabin"
+        android:paddingTop="10dp"
+        android:text="Title Goes Here"
+        android:textColor="#192553"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="@+id/coverArtPlaceholder"
+        app:layout_constraintTop_toBottomOf="@+id/coverArtPlaceholder" />
+
+    <TextView
+        android:id="@+id/song_duration"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cabin"
+        android:paddingBottom="10dp"
+        android:text="Duration"
+        android:textColor="#80192553"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/song_title"
+        app:layout_constraintTop_toBottomOf="@+id/song_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
