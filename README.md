@@ -21,10 +21,10 @@ I designed the app on Adobe XD. The initial design contains additional functions
 <img src="http://music-app-bf8f9.web.app/img/ola-ola-gui-overview.png" alt="ola-ola-gui" width="80%"/>
 
 
-## Attribution
+### Attribution
 Monster Vectors - https://www.freepik.com/vectors/character \
 GeeksforGeeks - https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/
 
-## Libraries/Resources Used
+### Libraries/Resources Used
 Picasso - https://square.github.io/picasso/#download \
 Firebase - https://firebase.google.com/docs/libraries 
