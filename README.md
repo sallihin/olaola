@@ -22,9 +22,9 @@ View the prototype here: https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a
 
 
 ## Attribution
-Monster Vectors - https://www.freepik.com/vectors/character 
+Monster Vectors - https://www.freepik.com/vectors/character \
 GeeksforGeeks - https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/
 
 ## Libraries/Resources Used
-Picasso - https://square.github.io/picasso/#download 
+Picasso - https://square.github.io/picasso/#download \
 Firebase - https://firebase.google.com/docs/libraries 
