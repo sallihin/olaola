@@ -14,7 +14,7 @@ A music app for kids, built with Java on Android Studios. "Ola Ola" is a filler 
 - [ ] Search music 
 
 ## Proposed GUI 
-I designed the initial idea on Adobe XD. The initial design contains additional functions which was later not included due to time constraints. 
+I designed the app on Adobe XD. The initial design contains additional functions which was later not included due to time constraints. 
 
 View the prototype here: https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a4180cda-b004/ 
 
@@ -24,3 +24,7 @@ View the prototype here: https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a
 ## Attribution
 Monster Vectors - https://www.freepik.com/vectors/character 
 GeeksforGeeks - https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/
+
+## Libraries/Resources Used
+Picasso - https://square.github.io/picasso/#download 
+Firebase - https://firebase.google.com/docs/libraries 
