@@ -16,7 +16,7 @@ A music app for kids, built with Java on Android Studios. "Ola Ola" is a filler 
 ## Proposed GUI 
 I designed the app on Adobe XD. The initial design contains additional functions which was later not included due to time constraints. 
 
-<a href="https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a4180cda-b004/">View the prototype here</a> \
+<a href="https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a4180cda-b004/">[ View the prototype here ]</a> 
 
 <img src="http://music-app-bf8f9.web.app/img/ola-ola-gui-overview.png" alt="ola-ola-gui" width="80%"/>
 
