@@ -5,14 +5,15 @@ A music app for kids, built with Java on Android Studios. "Ola Ola" is a filler 
 - [x] Proposed GUI on XD
 - [x] Store/Retrieve data from Firebase Realtime Database
 - [ ] App Login 
-- [ ] Scrub songs 
+- [x] Scrub songs 
 - [ ] Replay music
 - [ ] Shuffle music 
-- [ ] Swipe to change songs 
+- [x] Swipe to change songs 
 - [ ] Search music 
 
 ## Proposed GUI on XD 
-View the mockup here https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a4180cda-b004/
+![ola-ola-gui](http://music-app-bf8f9.web.app/img/ola-ola-gui-overview.png)
+View the prototype here https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a4180cda-b004/
 
 ## Attribution
 Monster Vectors - https://www.freepik.com/vectors/character 
