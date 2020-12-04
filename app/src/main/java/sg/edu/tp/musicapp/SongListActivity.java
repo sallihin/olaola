@@ -1,4 +1,4 @@
-package sg.edu.tp.putra;
+package sg.edu.tp.musicapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
  * Created by Putra on 30/11/2020
  */
 
-public class SongListing extends AppCompatActivity {
+public class SongListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     SongAdapter adapter; // Create Object of the Adapter class
@@ -34,14 +34,14 @@ public class SongListing extends AppCompatActivity {
         // Create a instance of the database and get its reference
         mbase = FirebaseDatabase.getInstance().getReference();
 
-        // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
+        // This is provided by the FirebaseUI to query the database to fetch data
         FirebaseRecyclerOptions<Song> options
-                = new FirebaseRecyclerOptions.Builder<Song>()
-                .setQuery(mbase, Song.class)
-                .build();
+            = new FirebaseRecyclerOptions.Builder<Song>()
+            .setQuery(mbase, Song.class)
+            .build();
 
         // Connecting object of required Adapter class to the Adapter class itself
-        adapter = new SongAdapter(options);
+        adapter = new SongAdapter(options, SongListActivity.this);
 
         // Connecting Adapter class with the Recycler view
         recyclerView.setAdapter(adapter);
@@ -60,7 +60,4 @@ public class SongListing extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
     }
-
-
-
 }

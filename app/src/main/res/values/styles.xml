@@ -1,11 +1,12 @@
 <resources>
-
     <style name="Widget.Theme.MusicApp.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="Widget.Theme.MusicApp.ButtonBar.Fullscreen" parent="">
-        <item name="android:background">@color/black_overlay</item>
-        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    <style name="CustomProgressBarHorizontal" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:minHeight">3dip</item>
+        <item name="android:maxHeight">3dip</item>
     </style>
+
 </resources>

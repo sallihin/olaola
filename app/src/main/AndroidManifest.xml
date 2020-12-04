@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sg.edu.tp.putra">
+    package="sg.edu.tp.musicapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,14 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp">
-        <activity android:name=".PlaySongActivity"></activity>
+        <activity android:name="sg.edu.tp.musicapp.PlaySongActivity"></activity>
         <activity
-            android:name=".SongListing"
+            android:name="sg.edu.tp.musicapp.SongListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_song_listing"
             android:theme="@style/Theme.MusicApp.Fullscreen" />
         <activity
-            android:name=".MainActivity"
+            android:name="sg.edu.tp.musicapp.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/Theme.MusicApp.Fullscreen">

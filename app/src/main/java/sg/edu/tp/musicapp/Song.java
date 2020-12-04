@@ -1,4 +1,4 @@
-package sg.edu.tp.putra;
+package sg.edu.tp.musicapp;
 
 /**
  * Created by Putra on 30/11/2020
@@ -6,6 +6,8 @@ package sg.edu.tp.putra;
 
 public class Song
 {
+    // Initialize empty variables to use with getters below
+
     private int songId;
     private String title;
     private String artist;

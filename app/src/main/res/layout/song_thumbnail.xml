@@ -21,8 +21,8 @@
 
         <ImageButton
             android:id="@+id/song_coverArt"
-            android:layout_width="178dp"
-            android:layout_height="179dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
             android:layout_gravity="center|center_horizontal|center_vertical"
             android:backgroundTint="#00FFFFFF"
             android:contentDescription="Album Cover"
@@ -46,11 +46,11 @@
         app:layout_constraintTop_toBottomOf="@+id/coverArtPlaceholder" />
 
     <TextView
-        android:id="@+id/song_duration"
+        android:id="@+id/song_artist"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cabin"
-        android:paddingBottom="10dp"
+        android:paddingBottom="20dp"
         android:text="Duration"
         android:textColor="#80192553"
         android:textSize="12sp"

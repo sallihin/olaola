@@ -1,4 +1,4 @@
-package sg.edu.tp.putra;
+package sg.edu.tp.musicapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToLoginPage(View view)
     {
-        Intent intent  = new Intent(this, SongListing.class);
+        Intent intent  = new Intent(this, SongListActivity.class);
         startActivity(intent);
     }
 }
