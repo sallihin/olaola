@@ -20,36 +20,9 @@ I designed the app on Adobe XD. The initial design contains additional functions
 
 <img src="http://music-app-bf8f9.web.app/img/ola-ola-gui-overview.png" alt="ola-ola-gui" width="80%"/>
 
-## Roadblocks 
-* While **Repeat Music** (onLoop) was relatively uneventful, creating **Shuffle Music** (onShuffle) was so much harder than I thought. Some of the key items I learnt from this includes; 
 
-    - Clicking onLoop or onShuffle should cancel the other operator. Logically, there is no way to keep repeating the song and yet randomize the next song at the same time. 
-    
-        ```
-        public void randomSong(View view)
-            {
-                if (!onShuffle)
-                {
-                    btnShuffle.setImageResource(R.drawable.btn_shuffle_active);
-                    onShuffle = true;
-
-                    if (onLoop)
-                    {
-                        // Disable onLoop if its true
-                        btnLoop.setImageResource(R.drawable.btn_repeat);
-                        onLoop = false;
-                    }
-                }
-                else
-                {
-                    btnShuffle.setImageResource(R.drawable.btn_shuffle);
-                    onShuffle = false;
-                }
-            }
-        ```
-
-
-
+## Visit my Instagram! 
+I've also documented the entire process (and my coding journey) on my instagram page [mmw.codes](https://instagram.com/mmw.codes)
 
 
 ### Attribution
