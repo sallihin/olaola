@@ -22,8 +22,9 @@ I designed the app on Adobe XD. The initial design contains additional functions
 
 ## Roadblocks 
 * While **Repeat Music** (onLoop) was relatively uneventful, creating **Shuffle Music** (onShuffle) was so much harder than I thought. Some of the key items I learnt from this includes; 
-    - Clicking onLoop or onShuffle should cancel the other operator
-    Logically, there is no way to keep repeating the song and yet randomize the next song at the same time. 
+
+    - Clicking onLoop or onShuffle should cancel the other operator. Logically, there is no way to keep repeating the song and yet randomize the next song at the same time. 
+    
         ```
         public void randomSong(View view)
             {
