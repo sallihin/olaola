@@ -30,9 +30,9 @@ I've also documented the programming process (and my #100daysofcode journey) on 
 
 
 ### Attribution
-* [Monster Vectors] (https://www.freepik.com/vectors/character) \
-* [GeeksforGeeks] (https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/)
+* [Monster Vectors](https://www.freepik.com/vectors/character) \
+* [GeeksforGeeks](https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/)
 
 ### Libraries/Resources Used
-* [Picasso] (https://square.github.io/picasso/#download) \
+* [Picasso](https://square.github.io/picasso/#download) \
 * [Firebase](https://firebase.google.com/docs/libraries) 
