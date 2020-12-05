@@ -20,19 +20,19 @@ I designed the app on Adobe XD. The initial design contains additional functions
 
 <img src="http://music-app-bf8f9.web.app/img/ola-ola-gui-overview.png" alt="ola-ola-gui" width="80%"/>
 
-## Bugs Found & Fixed
+## Bugs Found
 - [x] Tapping on the coverArt multiple times causes startActivity animation to appear 
 - [ ] When going prevActivity from the player, the current screen blinks for a second
 - [ ] Pressing next/previous, the current coverArt disappears instead of slides out
 
 ## Visit my Instagram! 
-I've also documented the entire process (and my coding journey) on my instagram page [mmw.codes](https://instagram.com/mmw.codes)
+I've also documented the programming process (and my #100daysofcode journey) on my instagram page [mmw.codes](https://instagram.com/mmw.codes)
 
 
 ### Attribution
-Monster Vectors - https://www.freepik.com/vectors/character \
-GeeksforGeeks - https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/
+* [Monster Vectors] (https://www.freepik.com/vectors/character) \
+* [GeeksforGeeks] (https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/)
 
 ### Libraries/Resources Used
-Picasso - https://square.github.io/picasso/#download \
-Firebase - https://firebase.google.com/docs/libraries 
+* [Picasso] (https://square.github.io/picasso/#download) \
+* [Firebase](https://firebase.google.com/docs/libraries) 
