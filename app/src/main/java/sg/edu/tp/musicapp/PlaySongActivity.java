@@ -3,7 +3,6 @@ package sg.edu.tp.musicapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -28,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Random;
 
 public class PlaySongActivity extends AppCompatActivity {
 
@@ -47,11 +48,13 @@ public class PlaySongActivity extends AppCompatActivity {
     // This is the built-in MediaPlayer object that we will use to play the music
     private MediaPlayer player = null;
     private boolean onLoop = false;
+    private boolean onShuffle = false;
 
     // This Button variable is created to link to the Play button at the playback screen. We need to do this
     // because it will act both as a Play and Pause button
     private ImageView btnImagePlayPause;
     private ImageView btnLoop;
+    private ImageView btnShuffle;
 
     // This is the position of the song in playback.
     // We set it to 0 here so that it starts at the beginning.
@@ -69,6 +72,9 @@ public class PlaySongActivity extends AppCompatActivity {
     private float x1,x2;
     static final int MIN_DISTANCE = 150;
 
+    // Random number variable
+    int nextRandomSong;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +82,7 @@ public class PlaySongActivity extends AppCompatActivity {
 
         btnImagePlayPause = findViewById(R.id.playButton);
         btnLoop = findViewById(R.id.loop);
+        btnShuffle = findViewById(R.id.shuffle);
         overridePendingTransition(R.anim.pull_from_bottom, 0);
         retrieveData();
         displaySong(title, artist, coverArt, songLength);
@@ -233,17 +240,9 @@ public class PlaySongActivity extends AppCompatActivity {
             handler.postDelayed(forSeekBar, 1000);
 
             // Set the text of the play button to "PAUSE"
-            btnImagePlayPause.setImageDrawable(
-                    this.getDrawable(getResources().getIdentifier(
-                            "@drawable/btn_pause",
-                            null,
-                            getPackageName()
-                    ))
-            );
+            btnImagePlayPause.setImageResource(R.drawable.btn_pause);
 
             // Set the heading title of the app to the music that is currently playing
-            setTitle("Now Playing " + title + " = " + artist);
-
             gracefullyStopWhenMusicEnds();
         }
         else
@@ -260,14 +259,8 @@ public class PlaySongActivity extends AppCompatActivity {
         // 2. Get the current position of the music that is playing
         musicPosition = player.getCurrentPosition();
 
-        // 3. Set the text on the button back to "PLAY"
-        btnImagePlayPause.setImageDrawable(
-                this.getDrawable(getResources().getIdentifier(
-                        "@drawable/btn_play",
-                        null,
-                        getPackageName()
-                ))
-        );
+        // 3. Set the button back to "PLAY"
+        btnImagePlayPause.setImageResource(R.drawable.btn_play);
     }
 
     private void gracefullyStopWhenMusicEnds()
@@ -277,7 +270,17 @@ public class PlaySongActivity extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer)
             {
-                stopActivities();
+                // Restart if onLoop is true
+                if (onLoop || onShuffle)
+                {
+                    Log.d("RESTART PROCESS", "stopactivities");
+                    stopActivities();
+                }
+                else {
+                    preparePlayer();
+                    playNext(findViewById(android.R.id.content));
+                    Log.d("RESTART PROCESS", "playnext");
+                }
             }
         });
     }
@@ -303,33 +306,30 @@ public class PlaySongActivity extends AppCompatActivity {
             player.stop();
             player.release();
             seekBar.setProgress(0);
-            btnImagePlayPause.setImageDrawable(
-                this.getDrawable(getResources().getIdentifier(
-                        "@drawable/btn_play",
-                        null,
-                        getPackageName()
-                ))
-            );
-            player = null;
-
-            // Restart if onLoop is true
             if (onLoop)
             {
                 preparePlayer();
                 player.start();
                 gracefullyStopWhenMusicEnds();
             }
+            else if (onShuffle)
+            {
+                preparePlayer();
+                playRandom(findViewById(android.R.id.content));
+            }
             else
             {
-                onLoop = false;
+                btnImagePlayPause.setImageResource(R.drawable.btn_play);
+                player = null;
             }
-
         }
     }
 
-
     public void playNext(View view)
     {
+        // Resets onLoop and onShuffle
+        resetRepeatAndShuffle();
+                
         // Query to find item with similar value. I created a songId key to compare.
         Query nextSongPosition =  databaseReference.orderByChild("songId").equalTo(songId+1);
 
@@ -376,6 +376,7 @@ public class PlaySongActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    stopActivities();
                     Toast.makeText(PlaySongActivity.this, "End of playlist", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -387,6 +388,9 @@ public class PlaySongActivity extends AppCompatActivity {
 
     public void playPrevious(View view)
     {
+        // Resets onLoop and onShuffle
+        resetRepeatAndShuffle();
+
         // Query to find item with similar value. I created a songId key to compare.
         Query previousSongPosition =  databaseReference.orderByChild("songId").equalTo(songId-1);
 
@@ -442,31 +446,147 @@ public class PlaySongActivity extends AppCompatActivity {
         });
     }
 
+    // I split this method into 2 parts so its easier to build and debug
+    public void playRandom(View view)
+    {
+        // First we query the max number of songs in the database
+        Query lastSongPosition = databaseReference.orderByChild("songId").limitToLast(1);
+        lastSongPosition.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                // Initialize Random class & select random next song
+                if(dataSnapshot.exists()) {
+
+                    for (DataSnapshot lastSong : dataSnapshot.getChildren()) {
+
+                        Integer lastSongIndex= lastSong.child("songId").getValue(Integer.class);
+                        Log.d("CheckShuffle", "upperMax: " + lastSongIndex);
+
+                        Random rand = new Random();
+                        int lowerBound = 1;
+                        int upperBound = lastSongIndex;
+                        nextRandomSong = rand.nextInt(upperBound-lowerBound) + lowerBound;
+                        Log.d("CheckShuffle", "nextRandomSong: " + nextRandomSong);
+
+                        playSelectedRandomSong(view, nextRandomSong);
+                    }
+                }
+                else {}
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    public void playSelectedRandomSong(View view, int nextRandomSong)
+    {
+        // From the above result, we query the database again using the nextRandomSong id
+        Query randomSongPosition =  databaseReference.orderByChild("songId").equalTo(nextRandomSong);
+        randomSongPosition.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                for (DataSnapshot songSnapshot : dataSnapshot.getChildren())
+                {
+                    CardView viewCoverArtCard = findViewById(R.id.imageShadow);
+                    Animation push_left_in = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.push_left_in);
+                    Animation push_left_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.push_left_out);
+                    Log.d("CheckShuffle", "Song Started");
+
+                    // Assign all song data to variables
+                    songId = songSnapshot.child("songId").getValue(Integer.class);; // Update songId to next track
+                    title = songSnapshot.child("title").getValue(String.class);
+                    artist = songSnapshot.child("artist").getValue(String.class);
+                    fileLink = songSnapshot.child("fileLink").getValue(String.class);
+                    coverArt = songSnapshot.child("coverArt").getValue(String.class);
+                    songLength = songSnapshot.child("songLength").getValue(Double.class);
+
+                    // Form the full url
+                    url = BASE_URL + fileLink;
+
+                    // Animation: Remove old coverArt
+                    viewCoverArtCard.startAnimation(push_left_out);
+
+                    //Display song info on screen
+                    displaySong(title, artist, coverArt, songLength);
+
+                    // Animation: Slide in new coverArt
+                    viewCoverArtCard.startAnimation(push_left_in);
+
+                    // Manually stop and release
+                    player.stop();
+                    player.release();
+
+                    // Start the player
+                    preparePlayer();
+                    player.start();
+
+                    // Prepares seekbar and calls for runnable updates at 1 sec interval
+                    seekBar.setMax(player.getDuration());
+                    handler.removeCallbacks(forSeekBar);
+                    handler.postDelayed(forSeekBar, 1000);
+
+                    gracefullyStopWhenMusicEnds();
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    // I built this method myself without using stackoverflow or any documentation! :)
+    // 2nd part of the codes in the stopactivities method
     public void repeatSong(View view)
     {
         if (!onLoop)
         {
-
-            btnLoop.setImageDrawable(
-                    this.getDrawable(getResources().getIdentifier(
-                            "@drawable/btn_repeat_active",
-                            null,
-                            getPackageName()
-                    ))
-            );
+            btnLoop.setImageResource(R.drawable.btn_repeat_active);
             onLoop = true;
+
+            if (onShuffle)
+            {
+                btnShuffle.setImageResource(R.drawable.btn_shuffle);
+                onShuffle = false;
+            }
         }
         else
         {
-            btnLoop.setImageDrawable(
-                    this.getDrawable(getResources().getIdentifier(
-                            "@drawable/btn_repeat",
-                            null,
-                            getPackageName()
-                    ))
-            );
+            btnLoop.setImageResource(R.drawable.btn_repeat);
             onLoop = false;
         }
+    }
+
+    public void randomSong(View view)
+    {
+        if (!onShuffle)
+        {
+            btnShuffle.setImageResource(R.drawable.btn_shuffle_active);
+            onShuffle = true;
+
+            if (onLoop)
+            {
+                // Disable onLoop if its true
+                btnLoop.setImageResource(R.drawable.btn_repeat);
+                onLoop = false;
+            }
+        }
+        else
+        {
+            btnShuffle.setImageResource(R.drawable.btn_shuffle);
+            onShuffle = false;
+        }
+    }
+    
+    public void resetRepeatAndShuffle()
+    {
+        onShuffle = false;
+        onLoop = false;
+        btnShuffle.setImageResource(R.drawable.btn_shuffle);
+        btnLoop.setImageResource(R.drawable.btn_repeat);
     }
 
     public void goPrevActivity(View view) {
