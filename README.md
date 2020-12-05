@@ -9,7 +9,7 @@ A music app for kids, built with Java on Android Studios. "Ola Ola" is a filler 
 - [ ] App Login 
 - [x] Scrub songs 
 - [x] Replay music
-- [ ] Shuffle music 
+- [x] Shuffle music 
 - [x] Swipe to change songs 
 - [ ] Search music 
 
@@ -19,6 +19,36 @@ I designed the app on Adobe XD. The initial design contains additional functions
 <a href="https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a4180cda-b004/">[ View the prototype here ]</a> 
 
 <img src="http://music-app-bf8f9.web.app/img/ola-ola-gui-overview.png" alt="ola-ola-gui" width="80%"/>
+
+## Roadblocks 
+* While **Repeat Music** (onLoop) was relatively uneventful, creating **Shuffle Music** (onShuffle) was so much harder than I thought. Some of the key items I learnt from this includes; 
+ - Clicking onLoop or onShuffle should cancel the other operator
+ Logically, there is no way to keep repeating the song and yet randomize the next song at the same time. 
+ ```
+ public void randomSong(View view)
+    {
+        if (!onShuffle)
+        {
+            btnShuffle.setImageResource(R.drawable.btn_shuffle_active);
+            onShuffle = true;
+
+            if (onLoop)
+            {
+                // Disable onLoop if its true
+                btnLoop.setImageResource(R.drawable.btn_repeat);
+                onLoop = false;
+            }
+        }
+        else
+        {
+            btnShuffle.setImageResource(R.drawable.btn_shuffle);
+            onShuffle = false;
+        }
+    }
+    ```
+
+
+
 
 
 ### Attribution
