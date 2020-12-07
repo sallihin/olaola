@@ -11,7 +11,11 @@ A music app for kids, built with Java on Android Studios. "Ola Ola" is a filler 
 - [x] Replay music
 - [x] Shuffle music 
 - [x] Swipe to change songs 
+- [ ] Preloader animation on Song Listing Activity
+- [ ] Store additional user details on Firebase 
+- [ ] Display unique user name on Song Listing Activity
 - [ ] Search music 
+
 
 ## Notes
 - The uneven songlist was done intentionally to display the dynamics of the 2 column layout.
@@ -30,6 +34,7 @@ I designed the app on Adobe XD. The initial design contains additional functions
 - [x] Tapping on the coverArt multiple times causes startActivity animation to appear 
 - [ ] When going prevActivity from the player, the current screen blinks for a second
 - [ ] Pressing next/previous, the current coverArt disappears instead of slides out
+- [ ] Sometimes the shuffle song lands on the same song again
 
 ## Visit my Instagram! 
 I've also documented the programming process (and my #100daysofcode journey) on my instagram page [mmw.codes](https://instagram.com/mmw.codes)
@@ -41,5 +46,5 @@ I've also documented the programming process (and my #100daysofcode journey) on 
 
 ### Libraries/Resources/Tutorials 
 * [Picasso](https://square.github.io/picasso/#download)  
-* [Firebase](https://firebase.google.com/docs/libraries) 
+* [Firebase Documentation](https://firebase.google.com/docs/libraries) 
 * [Firebase Authentication Setup](https://www.youtube.com/watch?v=TwHmrZxiPA8) 
