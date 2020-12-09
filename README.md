@@ -11,9 +11,10 @@ A music app for kids, built with Java on Android Studios. "Ola Ola" is a filler 
 - [x] Replay music
 - [x] Shuffle music 
 - [x] Swipe to change songs 
-- [ ] Preloader animation on Song Listing Activity
 - [x] Store additional user details on Firebase 
 - [x] Display unique user name on Song Listing Activity
+- [ ] Preloader animation on Song Listing Activity
+- [ ] Mini player on Song Listing Activity
 - [ ] Search music 
 
 
