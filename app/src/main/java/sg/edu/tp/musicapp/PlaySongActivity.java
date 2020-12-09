@@ -25,10 +25,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
-import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Created by Putra on 30/11/2020
+ */
 
 public class PlaySongActivity extends AppCompatActivity {
 
@@ -55,6 +58,7 @@ public class PlaySongActivity extends AppCompatActivity {
     private ImageView btnImagePlayPause;
     private ImageView btnLoop;
     private ImageView btnShuffle;
+    private TextView currentPosition;
 
     // This is the position of the song in playback.
     // We set it to 0 here so that it starts at the beginning.
@@ -69,7 +73,7 @@ public class PlaySongActivity extends AppCompatActivity {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     // Variables for swipe left/right to change songs
-    private float x1,x2;
+    private float x1,x2,y1,y2;
     static final int MIN_DISTANCE = 150;
 
     // Random number variable
@@ -83,22 +87,24 @@ public class PlaySongActivity extends AppCompatActivity {
         btnImagePlayPause = findViewById(R.id.playButton);
         btnLoop = findViewById(R.id.loop);
         btnShuffle = findViewById(R.id.shuffle);
-        overridePendingTransition(R.anim.pull_from_bottom, 0);
+        currentPosition = findViewById(R.id.currentPosition);
+
         retrieveData();
         displaySong(title, artist, coverArt, songLength);
         preparePlayer();
 
-        // To allow scrubbing on the seekBar
+        /* --------------------------------------------------------
+         * SeekBar Event Listeners
+         * -------------------------------------------------------*/
+
         seekBar = findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (player != null && player.isPlaying())
@@ -108,57 +114,98 @@ public class PlaySongActivity extends AppCompatActivity {
 
                 // Continue music where they last scrubbed
                 musicPosition = seekBar.getProgress();
+
+                // Display current position in text
+                long currentPositionReturn = player.getCurrentPosition();
+                currentPosition.setText(
+                    String.format("%d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(currentPositionReturn),
+                        TimeUnit.MILLISECONDS.toSeconds(currentPositionReturn) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(currentPositionReturn)) + 1
+                    )
+                );
             }
         });
 
     }
+
+    /* --------------------------------------------------------
+     * Swipe to change song / go to previous screen
+     * -------------------------------------------------------*/
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         switch(event.getAction())
         {
-
             case MotionEvent.ACTION_DOWN: // Find out x position of where press gesture started
                 x1 = event.getX();
+                y1 = event.getY();
                 break;
 
             case MotionEvent.ACTION_UP: // Find out x position of where press gesture ended ended
                 x2 = event.getX();
+                y2 = event.getY();
                 float deltaX = x2 - x1;
+                float deltaY = y2 - y1;
                 if (Math.abs(deltaX) > MIN_DISTANCE)
                 {
-                    // If end bigger than start, then gesture is right to left or GO BACK
+                    // If end bigger than start, i.e. gesture is right to left or GO BACK
                     if (x2 > x1)
                     {
                         playPrevious(findViewById(R.id.imgCoverArt));
                     }
-
-                    // Otherwise, go forward!
+                    // Otherwise, GO FORWARD!
                     else
                     {
                         playNext(findViewById(R.id.imgCoverArt));
                     }
                 }
+                else if (Math.abs(deltaY) > MIN_DISTANCE)
+                {
+                    if (y2 > y1)
+                    {
+                        goPrevActivity(findViewById(android.R.id.content));
+                    }
+                }
                 else
                 {
-                    // consider as something else - a screen tap for example
+                    // I can set additional actions here i
                 }
                 break;
         }
         return super.onTouchEvent(event);
     }
 
+    /* --------------------------------------------------------
+     * Runnable to repeatedly check and update the SeekBar position
+     * -------------------------------------------------------*/
+
     Runnable forSeekBar = new Runnable() {
         @Override
         public void run() {
             if (player != null && player.isPlaying())
             {
+                // Display current position on Seek bar
                 seekBar.setProgress(player.getCurrentPosition());
+
+                // Display current position in TextView
+                long currentPositionReturn = player.getCurrentPosition();
+                currentPosition.setText(
+                    String.format("%d:%02d",
+                    TimeUnit.MILLISECONDS.toMinutes(currentPositionReturn),
+                    TimeUnit.MILLISECONDS.toSeconds(currentPositionReturn) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(currentPositionReturn)) + 1
+                    )
+                );
             }
-            handler.postDelayed(this, 1000);
+            handler.postDelayed(this, 100);
         }
     };
+
+    /* --------------------------------------------------------
+     * Get data from SongAdapter
+     * -------------------------------------------------------*/
 
     private void retrieveData()
     {
@@ -171,6 +218,10 @@ public class PlaySongActivity extends AppCompatActivity {
         songLength = songData.getDouble("songLength");
         url = BASE_URL + fileLink;
     }
+
+    /* --------------------------------------------------------
+     * Set/update data on the player
+     * -------------------------------------------------------*/
 
     private void displaySong(String title, String artist, String coverArt, Double songLength)
     {
@@ -191,18 +242,22 @@ public class PlaySongActivity extends AppCompatActivity {
         txtTotalLength.setText(Double.toString(songLength));
     }
 
+    /* --------------------------------------------------------
+     * Initialize the Media Player
+     * -------------------------------------------------------*/
+
     private void preparePlayer()
     {
-        // 1. Create a new MediaPlayer
+        // Create a new MediaPlayer
         player = new MediaPlayer();
 
         // Catch any error that may occur and to handle the error.
         try
         {
-            // 2. This sets the Audio Stream Type to music streaming
+            // This sets the Audio Stream Type to music streaming
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-            // 3. Set the source of the music
+            // Set the source of the music
             player.setDataSource(url);
 
             // 4. Prepare the player for playback (WHY?)
@@ -213,6 +268,10 @@ public class PlaySongActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    /* --------------------------------------------------------
+     * Play / Pause Button
+     * -------------------------------------------------------*/
 
     public void playOrPauseMusic(View view)
     {
@@ -234,22 +293,26 @@ public class PlaySongActivity extends AppCompatActivity {
             // Start the player
             player.start();
 
-            // Prepares seekbar and calls for runnable updates at 1 sec interval
+            // Prepares seekbar and calls for runnable updates at 1/10 sec interval
             seekBar.setMax(player.getDuration());
             handler.removeCallbacks(forSeekBar);
-            handler.postDelayed(forSeekBar, 1000);
+            handler.postDelayed(forSeekBar, 100);
 
             // Set the text of the play button to "PAUSE"
             btnImagePlayPause.setImageResource(R.drawable.btn_pause);
 
             // Set the heading title of the app to the music that is currently playing
-            gracefullyStopWhenMusicEnds();
+            playNextSongWhenMusicEnds(view);
         }
         else
         {
             pauseMusic();
         }
     }
+
+    /* --------------------------------------------------------
+     * Pause Music Method
+     * -------------------------------------------------------*/
 
     private void pauseMusic()
     {
@@ -263,40 +326,37 @@ public class PlaySongActivity extends AppCompatActivity {
         btnImagePlayPause.setImageResource(R.drawable.btn_play);
     }
 
-    private void gracefullyStopWhenMusicEnds()
+    /* --------------------------------------------------------
+     * Instead of stopping, automatically play next song
+     * -------------------------------------------------------*/
+
+    private void playNextSongWhenMusicEnds(View view)
     {
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
         {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer)
             {
-                // Restart if onLoop is true
-                if (onLoop || onShuffle)
+                if (onLoop)
                 {
-                    Log.d("RESTART PROCESS", "stopactivities");
                     stopActivities();
+                    playOrPauseMusic(view);
                 }
-                else {
-                    preparePlayer();
+                else if (onShuffle)
+                {
+                    shuffleNextSong(findViewById(android.R.id.content));
+                }
+                else
+                {
                     playNext(findViewById(android.R.id.content));
-                    Log.d("RESTART PROCESS", "playnext");
                 }
             }
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (player != null)
-        {
-            handler.removeCallbacks(forSeekBar);
-            player.stop();
-            player.release();
-            player = null;
-            onLoop = false;
-        }
-    }
+    /* --------------------------------------------------------
+     * Stop player process
+     * -------------------------------------------------------*/
 
     private void stopActivities()
     {
@@ -306,30 +366,17 @@ public class PlaySongActivity extends AppCompatActivity {
             player.stop();
             player.release();
             seekBar.setProgress(0);
-            if (onLoop)
-            {
-                preparePlayer();
-                player.start();
-                gracefullyStopWhenMusicEnds();
-            }
-            else if (onShuffle)
-            {
-                preparePlayer();
-                playRandom(findViewById(android.R.id.content));
-            }
-            else
-            {
-                btnImagePlayPause.setImageResource(R.drawable.btn_play);
-                player = null;
-            }
+            btnImagePlayPause.setImageResource(R.drawable.btn_play);
+            player = null;
         }
     }
 
+    /* --------------------------------------------------------
+     * Check if next song is available and plays
+     * -------------------------------------------------------*/
+
     public void playNext(View view)
     {
-        // Resets onLoop and onShuffle
-        resetRepeatAndShuffle();
-                
         // Query to find item with similar value. I created a songId key to compare.
         Query nextSongPosition =  databaseReference.orderByChild("songId").equalTo(songId+1);
 
@@ -343,6 +390,7 @@ public class PlaySongActivity extends AppCompatActivity {
                 {
                     for (DataSnapshot songSnapshot : dataSnapshot.getChildren())
                     {
+                        // Animations
                         CardView viewCoverArtCard = findViewById(R.id.imageShadow);
                         Animation push_left_in = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.push_left_in);
                         Animation push_left_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.push_left_out);
@@ -376,7 +424,6 @@ public class PlaySongActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    stopActivities();
                     Toast.makeText(PlaySongActivity.this, "End of playlist", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -386,11 +433,12 @@ public class PlaySongActivity extends AppCompatActivity {
         });
     }
 
+    /* --------------------------------------------------------
+     * Check if previous song is available and plays
+     * -------------------------------------------------------*/
+
     public void playPrevious(View view)
     {
-        // Resets onLoop and onShuffle
-        resetRepeatAndShuffle();
-
         // Query to find item with similar value. I created a songId key to compare.
         Query previousSongPosition =  databaseReference.orderByChild("songId").equalTo(songId-1);
 
@@ -437,7 +485,7 @@ public class PlaySongActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(PlaySongActivity.this, "End of playlist", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "End of playlist", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -445,9 +493,15 @@ public class PlaySongActivity extends AppCompatActivity {
             }
         });
     }
+    /* --------------------------------------------------------
+     * Shuffle Song Function
+     * I split this into 2 methods so its easier to build and
+     * debug as it previously didn't crash but caused an infinite
+     * loop so the songs keep changing non-stop.
+     * -------------------------------------------------------*/
 
-    // I split this method into 2 parts so its easier to build and debug
-    public void playRandom(View view)
+    // First we find the next random song
+    public void shuffleNextSong(View view)
     {
         // First we query the max number of songs in the database
         Query lastSongPosition = databaseReference.orderByChild("songId").limitToLast(1);
@@ -456,30 +510,30 @@ public class PlaySongActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                // Initialize Random class & select random next song
-                if(dataSnapshot.exists()) {
+                // This query only returns the last element
+                for (DataSnapshot lastSong : dataSnapshot.getChildren()) {
 
-                    for (DataSnapshot lastSong : dataSnapshot.getChildren()) {
+                    // From this last element, we find the songId, which indicates the last song in the database
+                    Integer lastSongIndex= lastSong.child("songId").getValue(Integer.class);
+                    Log.d("CheckShuffle", "upperMax: " + lastSongIndex);
 
-                        Integer lastSongIndex= lastSong.child("songId").getValue(Integer.class);
-                        Log.d("CheckShuffle", "upperMax: " + lastSongIndex);
+                    // Random song selector between 1 and n, n being the last song in the database
+                    Random rand = new Random();
+                    int lowerBound = 1;
+                    int upperBound = lastSongIndex;
+                    nextRandomSong = rand.nextInt(upperBound-lowerBound) + lowerBound;
+                    Log.d("CheckShuffle", "nextRandomSong: " + nextRandomSong);
 
-                        Random rand = new Random();
-                        int lowerBound = 1;
-                        int upperBound = lastSongIndex;
-                        nextRandomSong = rand.nextInt(upperBound-lowerBound) + lowerBound;
-                        Log.d("CheckShuffle", "nextRandomSong: " + nextRandomSong);
-
-                        playSelectedRandomSong(view, nextRandomSong);
-                    }
+                    // Then we play the randomly generated songId
+                    playSelectedRandomSong(view, nextRandomSong);
                 }
-                else {}
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
 
+    // Then we play the next chosen song
     public void playSelectedRandomSong(View view, int nextRandomSong)
     {
         // From the above result, we query the database again using the nextRandomSong id
@@ -491,6 +545,7 @@ public class PlaySongActivity extends AppCompatActivity {
             {
                 for (DataSnapshot songSnapshot : dataSnapshot.getChildren())
                 {
+                    // Animation to indicate next song
                     CardView viewCoverArtCard = findViewById(R.id.imageShadow);
                     Animation push_left_in = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.push_left_in);
                     Animation push_left_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.push_left_out);
@@ -516,20 +571,18 @@ public class PlaySongActivity extends AppCompatActivity {
                     // Animation: Slide in new coverArt
                     viewCoverArtCard.startAnimation(push_left_in);
 
-                    // Manually stop and release
-                    player.stop();
-                    player.release();
+                    // Stop current song
+                    stopActivities();
 
-                    // Start the player
-                    preparePlayer();
-                    player.start();
+                    // Call playOrPauseMusic to play the song
+                    playOrPauseMusic(view);
 
-                    // Prepares seekbar and calls for runnable updates at 1 sec interval
+                    // Prepares seekbar and calls for runnable updates at 1/10 sec interval
                     seekBar.setMax(player.getDuration());
                     handler.removeCallbacks(forSeekBar);
-                    handler.postDelayed(forSeekBar, 1000);
+                    handler.postDelayed(forSeekBar, 100);
 
-                    gracefullyStopWhenMusicEnds();
+                    playNextSongWhenMusicEnds(view);
                 }
 
             }
@@ -538,8 +591,12 @@ public class PlaySongActivity extends AppCompatActivity {
         });
     }
 
-    // I built this method myself without using stackoverflow or any documentation! :)
-    // 2nd part of the codes in the stopactivities method
+    /* --------------------------------------------------------
+     * Enable/Disable loop function
+     * I built this method myself without using stackoverflow
+     * or any documentation! :)
+     * -------------------------------------------------------*/
+
     public void repeatSong(View view)
     {
         if (!onLoop)
@@ -547,6 +604,7 @@ public class PlaySongActivity extends AppCompatActivity {
             btnLoop.setImageResource(R.drawable.btn_repeat_active);
             onLoop = true;
 
+            // If user enables onLoop, we disable onShuffle
             if (onShuffle)
             {
                 btnShuffle.setImageResource(R.drawable.btn_shuffle);
@@ -560,6 +618,10 @@ public class PlaySongActivity extends AppCompatActivity {
         }
     }
 
+    /* --------------------------------------------------------
+     * Enable/Disable shuffle function
+     * -------------------------------------------------------*/
+
     public void randomSong(View view)
     {
         if (!onShuffle)
@@ -567,6 +629,7 @@ public class PlaySongActivity extends AppCompatActivity {
             btnShuffle.setImageResource(R.drawable.btn_shuffle_active);
             onShuffle = true;
 
+            // If user enables onShuffle, we disable onLoop
             if (onLoop)
             {
                 // Disable onLoop if its true
@@ -580,18 +643,36 @@ public class PlaySongActivity extends AppCompatActivity {
             onShuffle = false;
         }
     }
-    
-    public void resetRepeatAndShuffle()
-    {
-        onShuffle = false;
-        onLoop = false;
-        btnShuffle.setImageResource(R.drawable.btn_shuffle);
-        btnLoop.setImageResource(R.drawable.btn_repeat);
+
+    /* --------------------------------------------------------
+     * Go back to previous Activity
+     * -------------------------------------------------------*/
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (player != null)
+        {
+            handler.removeCallbacks(forSeekBar);
+            player.stop();
+            player.release();
+            player = null;
+            onLoop = false;
+            onShuffle = false;
+        }
     }
 
+    // This method stops all music and goes back to the previous activity
     public void goPrevActivity(View view) {
+        findViewById(R.id.goBack).setEnabled(false);
+        handler.removeCallbacks(forSeekBar);
+        player.stop();
+        player.release();
+        player = null;
+        onLoop = false;
+        onShuffle = false;
         Intent intent  = new Intent(this, SongListActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.pull_from_top, R.anim.pull_from_top);
+        overridePendingTransition(R.anim.pull_from_top, 0);
     }
 }

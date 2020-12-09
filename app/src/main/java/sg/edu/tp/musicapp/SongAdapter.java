@@ -1,10 +1,8 @@
 package sg.edu.tp.musicapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +21,10 @@ import com.squareup.picasso.Picasso;
 
 public class SongAdapter extends FirebaseRecyclerAdapter<Song, SongAdapter.SongViewHolder> {
 
+    /* --------------------------------------------------------
+     * This class populates the placeholder inside RecycleViewer
+     * -------------------------------------------------------*/
+
     Context mContext;
     public SongAdapter(@NonNull FirebaseRecyclerOptions<Song> options, Context context)
     {
@@ -36,9 +38,7 @@ public class SongAdapter extends FirebaseRecyclerAdapter<Song, SongAdapter.SongV
         // Pulls title from Song class
         holder.song_title.setText(model.getTitle());
 
-        // Convert double to string and concatenate "mins"
-        // String songLength = Double.toString(model.getSongLength()) + " mins";
-
+        // Sets Artist name
         holder.song_artist.setText(model.getArtist());
 
         // Using Picasso library to dynamically download images and insert to the placeholder
@@ -48,6 +48,10 @@ public class SongAdapter extends FirebaseRecyclerAdapter<Song, SongAdapter.SongV
         holder.song_coverArt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Prevent startActivity from running many times due to multiple clicks
+                holder.song_coverArt.setEnabled(false);
+
+                // Create intent for the next Activity
                 Intent intent = new Intent(holder.song_coverArt.getContext(), PlaySongActivity.class);
                 intent.putExtra("songId", model.getSongId());
                 intent.putExtra("artist", model.getArtist());
@@ -56,22 +60,12 @@ public class SongAdapter extends FirebaseRecyclerAdapter<Song, SongAdapter.SongV
                 intent.putExtra("fileLink", model.getFileLink());
                 intent.putExtra("coverArt", model.getCoverArt());
 
-                Activity mActivity = (Activity) mContext;
                 holder.song_coverArt.getContext().startActivity(intent);
-                mActivity.overridePendingTransition(R.anim.no_change, R.anim.no_change);
             }
         });
     }
 
-    // Takes data from SongAdapter, inflates into song_thumbnail
-    @NonNull @Override
-    public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_thumbnail, parent, false);
-        return new SongAdapter.SongViewHolder(view);
-    }
-
-    // These are the locations of the placeholders on song_thumbnail.xml
+    // These are the View ids of the placeholders on song_thumbnail.xml
     class SongViewHolder extends RecyclerView.ViewHolder
     {
         TextView song_title, song_artist;
@@ -83,6 +77,14 @@ public class SongAdapter extends FirebaseRecyclerAdapter<Song, SongAdapter.SongV
             song_artist = itemView.findViewById(R.id.song_artist);
             song_coverArt = itemView.findViewById(R.id.song_coverArt);
         }
+    }
+
+    // Takes data from SongAdapter, inflates into song_thumbnail
+    @NonNull @Override
+    public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_thumbnail, parent, false);
+        return new SongAdapter.SongViewHolder(view);
     }
 
 

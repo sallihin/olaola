@@ -1,4 +1,5 @@
 <resources>
+
     <style name="Widget.Theme.MusicApp.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -8,5 +9,40 @@
         <item name="android:minHeight">3dip</item>
         <item name="android:maxHeight">3dip</item>
     </style>
+
+    <style name="Widget.Theme.MusicApp.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+
+    <style name="AlertDialogStyle">
+        <item name="android:textColor">#E52657</item>
+        <item name="android:textColorPrimary">#192553</item>
+        <item name="android:colorPrimary">#E52657</item>
+        <item name="android:colorAccent">#E52657</item>
+
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+        <item name="android:borderlessButtonStyle">@style/OlaOla.Button.Borderless</item>
+        <item name="android:buttonBarStyle">@style/OlaOla.ButtonBar.AlertDialog</item>
+    </style>
+
+    <style name="OlaOla.ButtonBar.AlertDialog" parent="">
+        <item name="android:background">#E52657</item>
+    </style>
+
+    <style name="OlaOla.Button.Borderless" parent="">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textAppearance">@style/OlaOla.DialogButton</item>
+    </style>
+
+
+    <style name="OlaOla.DialogButton" parent="AlertDialogStyle">
+
+    </style>
+
+
 
 </resources>

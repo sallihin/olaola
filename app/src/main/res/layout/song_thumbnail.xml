@@ -5,16 +5,17 @@
     android:id="@+id/songs"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    android:paddingHorizontal="30dp">
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:clipToPadding="false">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/coverArtPlaceholder"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:elevation="5dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="15dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
         app:layout_constraintLeft_toLeftOf="@+id/songs"
         app:layout_constraintRight_toRightOf="@+id/songs"
         app:layout_constraintTop_toTopOf="@+id/songs">
@@ -50,7 +51,7 @@
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cabin"
-        android:paddingBottom="20dp"
+        android:paddingBottom="15dp"
         android:text="Duration"
         android:textColor="#80192553"
         android:textSize="12sp"
