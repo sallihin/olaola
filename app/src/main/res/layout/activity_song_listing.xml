@@ -43,7 +43,7 @@
                     android:gravity="center"
                     android:keepScreenOn="true"
                     android:onClick="showLogOut"
-                    android:text="Hi Zahra!"
+                    android:text="Hi User!"
                     android:textColor="#E52657"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -64,7 +64,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_song_list"
                 android:layout_width="match_parent"
@@ -73,8 +72,6 @@
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
                 android:paddingBottom="100dp" />
-
-
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -93,5 +90,6 @@
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@+id/scrollView"
         app:layout_constraintTop_toTopOf="@+id/frameLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

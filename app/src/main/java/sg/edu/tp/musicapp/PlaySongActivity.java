@@ -239,7 +239,7 @@ public class PlaySongActivity extends AppCompatActivity {
 
         // Display total length of song
         TextView txtTotalLength = findViewById(R.id.totalLength);
-        txtTotalLength.setText(Double.toString(songLength));
+        txtTotalLength.setText(String.format("%.2f",songLength));
     }
 
     /* --------------------------------------------------------

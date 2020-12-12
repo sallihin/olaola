@@ -61,14 +61,14 @@
         style="@style/CustomProgressBarHorizontal"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:max="100"
         android:progressBackgroundTint="#D5D5D5"
         android:progressTint="#E52657"
         android:thumbTint="#E52657"
         app:layout_constraintBottom_toTopOf="@+id/playButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtArtist" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <ImageView

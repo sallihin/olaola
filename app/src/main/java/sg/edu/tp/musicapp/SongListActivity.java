@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -89,9 +90,14 @@ public class SongListActivity extends AppCompatActivity {
         fStoreListener = documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                greetingText.setText("Hi " + documentSnapshot.getString("name") + "!");
+                // Check if documentSnapshot is not null, otherwise app may crash when trying to log out
+                if (documentSnapshot != null)
+                {
+                    greetingText.setText("Hi " + documentSnapshot.getString("name") + "!");
+                }
             }
         });
+
     }
 
     // Function to tell the app to start getting data from database on starting of the activity
@@ -127,8 +133,9 @@ public class SongListActivity extends AppCompatActivity {
     // Log out of the app
     public void logOut(View view)
     {
-        FirebaseAuth.getInstance().signOut();
         fStoreListener.remove();
+        fAuth.signOut();
+
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
