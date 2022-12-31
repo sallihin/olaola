@@ -26,8 +26,6 @@ I designed the app on Adobe XD. The initial design contains additional functions
 
 [[ View the prototype here ]](https://xd.adobe.com/view/e5575c5b-b6d6-4e50-ae59-04d8a4180cda-b004/)
 
-<img src="http://music-app-bf8f9.web.app/img/ola-ola-gui-overview.png" alt="ola-ola-gui" width="80%"/>
-
 ## Bugs Found
 - [x] Tapping on the coverArt multiple times causes startActivity animation to appear 
 - [ ] When going prevActivity from the player, the current screen blinks for a second
